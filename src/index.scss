@@ -16,7 +16,7 @@
 
 
 
-nav {
+.nav {
   max-width: var(--max-width);
   margin: auto;
   padding: 1rem;
@@ -24,9 +24,11 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-shadow: 0 8px 6px -6px #999;
+
 }
 
-.nav__logo a {
+.nav__logo_link {
   font-size: 1.5rem;
   font-weight: 500;
   color: var(--primary-color);
@@ -39,9 +41,10 @@ nav {
   display: flex;
   align-items: center;
   gap: 1rem;
+  
 }
 
-.link a {
+.link__list {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   font-weight: 500;
@@ -50,7 +53,7 @@ nav {
   transition: 0.3s;
 }
 
-.link a:hover {
+.link__list:hover {
   color: var(--primary-color);
 }
 

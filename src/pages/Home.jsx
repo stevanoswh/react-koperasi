@@ -1,6 +1,7 @@
 import React from 'react'
 import Card from '../components/Card'
 import AboutUs from '../components/AboutUs'
+import { Link } from 'react-router-dom'
 
 export default function Home() {
   return (
@@ -59,7 +60,7 @@ export default function Home() {
                 title="Investasi Aset" 
                 copy="Seriously, straight up, just blast off into outer space today" 
                 buttonText="Daftar" 
-        />
+            />
         </div>
     </div>
   )

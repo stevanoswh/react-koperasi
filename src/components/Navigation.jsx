@@ -1,16 +1,15 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Navigation() {
   return (
-    <nav className='nav'>
-            <div className="nav__logo"><a href="#">Enigma Koperasi</a></div>
+    <div className='nav'>
+            <div className="nav__logo"><Link className='nav__logo_link' to="/">Enigma Koperasi</Link></div>
             <ul className="nav__links">
-                <li className="link"><a href="#">Home</a></li>
-                <li className="link"><a href="#">About Us</a></li>
-                <li className="link"><a href="#">Services</a></li>
-                <li className="link"><a href="#">Blog</a></li>
-                <li className="link"><a href="#" className="nav__btn">Register</a></li>
+                <li className="link"><Link className='link__list' to={`/`}>Home</Link></li>
+                <li className="link"><Link className='link__list' to={"/contact"}>Contact</Link></li> 
+                <li className="link"><Link className='link__list nav__btn' to={"/"}>Register</Link></li>
             </ul>
-    </nav>
+    </div>
   )
-}
+} 
