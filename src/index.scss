@@ -14,65 +14,86 @@
   --font-serif: "Cardo", serif;
 }
 
-
-
-.nav {
-  max-width: var(--max-width);
-  margin: auto;
-  padding: 1rem;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 8px 6px -6px #999;
-
+.navbar {
+  background-color: #fff;
+  height: 80px;
+  margin: 20px;
+  border-radius: 16px;
+  padding: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
 }
 
-.nav__logo_link {
-  font-size: 1.5rem;
+.navbar-brand {
   font-weight: 500;
   color: var(--primary-color);
-  text-decoration: none;
-  transition: 0.3s;
+  font-size: 24px;
+  transition: 0.3s color;
 }
 
-.nav__links {
-  list-style: none;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  
-}
-
-.link__list {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--text-color);
-  text-decoration: none;
-  transition: 0.3s;
-}
-
-.link__list:hover {
-  color: var(--primary-color);
-}
-
-.link .nav__btn {
-  padding: 0.5rem 2rem;
-  color: var(--white) !important;
+.login-button {
   background-color: var(--primary-color);
-  border-radius: 5px;
+  color: #fff;
+  font-size: 14px;
+  padding: 8px 20px;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: 0.3s background-color;
 }
 
-.link .nav__btn:hover {
+.login-button:hover{
   background-color: var(--primary-color-dark);
 }
+
+.navbar-toggler {
+  border: none;
+  font-size: 1.25rem;
+}
+
+.navbar-toggler:focus, .btn-close:focus{
+  box-shadow: none;
+  outline: none;
+}
+
+.nav-link {
+  color: #666777;
+  font-weight: 500;
+  position: relative;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #000;
+}
+
+.mar-top {
+  margin-top: 140px;
+}
+
+@media (min-width: 991px) {
+  .nav-link::before{
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-color);
+      visibility: hidden;
+      transition: 0.3s ease-in-out;
+  }
+}
+
+.nav-link:hover::before {
+  width: 100%;
+  visibility: visible;
+}
+
 
 .home__container {
   max-width: var(--max-width);
   margin: auto;
   padding: 1rem;
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 200px);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 5rem;

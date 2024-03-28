@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 export default function Home() {
   return (
-    <div>
+    <div className='mar-top'>
         <div className="home__container">
             <div className="content__container">
             <h1>
