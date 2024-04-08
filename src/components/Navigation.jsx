@@ -1,7 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../redux/features/authSlice';
 
 const Navigation = () => {
+
+  const user = useSelector((state) => state.auth.user);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('user');
+    localStorage.removeItem('rememberMe');
+    dispatch(logout());
+    navigate('/login');
+  };
+
   return (
     <nav className="navbar navbar-expand-lg fixed-top">
       <div className="container-fluid">
@@ -22,10 +38,20 @@ const Navigation = () => {
               <li className="nav-item">
                 <Link className="nav-link mx-lg-2" to="/contact">Contact</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link mx-lg-2" to="/parti">Participant</Link>
+              </li>
             </ul>
           </div>
         </div>
-        <Link to="/login" className="login-button">Login</Link>
+        {isLoggedIn ? (
+          <div>
+            <span className="navbar-text me-3">Hello, {user?.name}!</span>
+            <Link to="/login" className="login-button" onClick={handleLogout}>Logout</Link> 
+          </div>
+        ) : (
+          <Link to="/login" className="login-button">Login</Link> 
+        )}
       </div>
     </nav>
   );

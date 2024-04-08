@@ -13,6 +13,11 @@ import NotFoundPage from './pages/NotFound.jsx';
 import Counter from './pages/LifecycleComp.jsx';
 import ReactHook from './pages/ReactHook.jsx';
 import ParticipantList from './pages/Participant.jsx';
+import CounterRedux from './redux/features/CounterRedux.jsx';
+import { Provider } from 'react-redux';
+import {store} from './redux/store.js'
+import Login from './pages/Login.jsx';
+import CounterWithContext from '../context/CounterWithContext.jsx';
 
 const router = createBrowserRouter([
   {
@@ -39,13 +44,27 @@ const router = createBrowserRouter([
       {
         path: "parti",
         element: <ParticipantList/>
+      },
+      {
+        path:`counterredux`,
+        element: <CounterRedux/>
+      },
+      {
+        path: 'contextexample',
+        element: <CounterWithContext/>
       }
     ],
   },
+  {
+    path: "/login",
+    element: <Login />
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}> 
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>,
 )
