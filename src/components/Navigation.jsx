@@ -1,22 +1,19 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../redux/features/authSlice';
+import { useAuth } from '../context/AuthContext';
+
 
 const Navigation = () => {
 
-  const user = useSelector((state) => state.auth.user);
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const dispatch = useDispatch();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('user');
-    localStorage.removeItem('rememberMe');
-    dispatch(logout());
+    logout();
     navigate('/login');
   };
+
+  const isLoggedIn = Boolean(user);
 
   return (
     <nav className="navbar navbar-expand-lg fixed-top">

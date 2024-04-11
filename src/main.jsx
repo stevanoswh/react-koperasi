@@ -14,10 +14,9 @@ import Counter from './pages/LifecycleComp.jsx';
 import ReactHook from './pages/ReactHook.jsx';
 import ParticipantList from './pages/Participant.jsx';
 import CounterRedux from './redux/features/CounterRedux.jsx';
-import { Provider } from 'react-redux';
-import {store} from './redux/store.js'
 import Login from './pages/Login.jsx';
-import CounterWithContext from '../context/CounterWithContext.jsx';
+import CounterWithContext from './pages/CounterWithContext.jsx';
+import { AuthProvider } from './context/AuthContext.jsx';
 
 const router = createBrowserRouter([
   {
@@ -63,8 +62,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Provider store={store}> 
+    <AuthProvider>
+    {/* <Provider store={store}>  */}
       <RouterProvider router={router} />
-    </Provider>
+    {/* </Provider> */}
+    </AuthProvider>
   </React.StrictMode>,
 )
