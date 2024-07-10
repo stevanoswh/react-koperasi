@@ -1,4 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+// src/context/AuthContext.js
+import React, { createContext, useContext, useReducer } from 'react';
+import axiosInstance from '../api/axiosInstance';
+
 
 const AuthContext = createContext();
 
@@ -6,58 +9,46 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-export const AuthProvider = ({ children }) => {
-  const [authState, setAuthState] = useState({
-    isLoggedIn: false,
-    user: null,
-  });
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    if (storedUser && isLoggedIn) {
-      setAuthState({
-        isLoggedIn: true,
-        user: JSON.parse(storedUser),
-      });
-    }
-  }, []);
-
-const login = (username, rememberMe) => {
-  const user = { name: username };
-  setAuthState({
-    isLoggedIn: true,
-    user,
-  });
-  localStorage.setItem('isLoggedIn', 'true');
-  localStorage.setItem('user', JSON.stringify(user));
-  if (rememberMe) {
-    localStorage.setItem('rememberMe', 'true');
-  } else {
-    localStorage.removeItem('rememberMe');
+const authReducer = (state, action) => {
+  switch (action.type) {
+    case 'LOGIN':
+      return { ...state, isLoggedIn: true, token: action.payload.token, user: action.payload.user };
+    case 'LOGOUT':
+      return { ...state, isLoggedIn: false, token: null, user: null };
+    default:
+      return state;
   }
 };
 
+export const AuthProvider = ({ children }) => {
+  const [authState, dispatch] = useReducer(authReducer, {
+    isLoggedIn: !!localStorage.getItem('token'),
+    token: localStorage.getItem('token'),
+    user: null,
+  });
+
+  const login = async (username, password) => {
+    try {
+      const response = await axiosInstance.post('/auth/signin', { username, password });
+      const { data, roles } = response.data;
+      if (data) {
+        localStorage.setItem('token', data);
+        dispatch({ type: 'LOGIN', payload: { token: data, user: { username, roles } } });
+      } else {
+        throw new Error('Login failed: No token received');
+      }
+    } catch (error) {
+      console.error("Login Failed: ", error);
+      throw error;
+    }
+  };
 
   const logout = () => {
-    setAuthState({
-      isLoggedIn: false,
-      user: null,
-    });
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('user');
-    localStorage.removeItem('rememberMe');
+    localStorage.removeItem('token');
+    dispatch({ type: 'LOGOUT' });
   };
 
-  const value = {
-    ...authState,
-    login,
-    logout,
-  };
+  const value = { ...authState, login, logout };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

@@ -1,56 +1,46 @@
-import React, { useState } from 'react';
-import ParticipantForm from '../components/participant/ParticipantForm'
-import ParticipantList from '../components/participant/ParticipantList'
+import React, { useEffect, useState } from 'react';
+import NasabahForm from '../components/participant/ParticipantForm'
+import NasabahList from '../components/participant/ParticipantList'
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchNasabahs, deleteNasabah, updateNasabah, createNasabah } from '../redux/features/nasabah/nasabahSlice';
 
-function ParticipantApp() {
-  const [participants, setParticipants] = useState([]);
-  const [participantData, setParticipantData] = useState({ nama: '', tempatLahir: '', tanggalLahir: '', alamat: '' });
-  const [editIndex, setEditIndex] = useState('');
+export default function ParticipantApp() {
+  const [currentNasabah, setCurrentNasabah] = useState(null);
+  const dispatch = useDispatch();
+  const nasabahList = useSelector(state => state.nasabah.nasabahList);
 
-  const submitForm = () => {
-    if (editIndex === '') {
-      setParticipants([...participants, participantData]);
+  useEffect(() => {
+    dispatch(fetchNasabahs());
+  }, [dispatch]);
+
+  const handleEdit = (nasabah) => {
+    setCurrentNasabah(nasabah); 
+  };
+
+
+  const handleDelete = (id) => {
+    dispatch(deleteNasabah(id));
+  };
+
+  const handleSave = (nasabahData) => {
+    if (currentNasabah) {
+      dispatch(updateNasabah({ ...nasabahData, id: currentNasabah.id }));
     } else {
-      const updatedParticipants = [...participants];
-      updatedParticipants[editIndex] = participantData;
-      setParticipants(updatedParticipants);
+      dispatch(createNasabah(nasabahData));
     }
-    clearForm();
-  };
-
-  const editParticipant = (index) => {
-    setEditIndex(index);
-    setParticipantData(participants[index]);
-  };
-
-  const deleteParticipant = (index) => {
-    const updatedParticipants = participants.filter((_, i) => i !== index);
-    setParticipants(updatedParticipants);
-  };
-
-  const clearForm = () => {
-    setEditIndex('');
-    setParticipantData({ nama: '', tempatLahir: '', tanggalLahir: '', alamat: '' });
+    setCurrentNasabah(null);  // Reset the current nasabah
   };
 
   return (
     <div className="container mar-top">
-      <h2>Daftar Peserta Koperasi</h2>
-      <ParticipantForm 
-        participantData={participantData} 
-        setParticipantData={setParticipantData} 
-        submitForm={submitForm} 
-        clearForm={clearForm} 
-        editIndex={editIndex} 
-      />
-      <h2 style={{marginTop: "50px"}}>List Peserta</h2>
-      <ParticipantList
-        participants={participants} 
-        editParticipant={editParticipant} 
-        deleteParticipant={deleteParticipant} 
+      <h2>Daftar Nasabah Koperasi</h2>
+      <NasabahForm nasabah={currentNasabah} onSave={handleSave} />
+      <h2 style={{ marginTop: "50px" }}>List Nasabah</h2>
+      <NasabahList
+        nasabahList={nasabahList}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
       />
     </div>
   );
 }
-
-export default ParticipantApp;

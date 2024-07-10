@@ -2,18 +2,14 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-
 const Navigation = () => {
-
-  const { user, logout } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate('/login');
   };
-
-  const isLoggedIn = Boolean(user);
 
   return (
     <nav className="navbar navbar-expand-lg fixed-top">
@@ -36,19 +32,19 @@ const Navigation = () => {
                 <Link className="nav-link mx-lg-2" to="/contact">Contact</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link mx-lg-2" to="/parti">Participant</Link>
+                <Link className="nav-link mx-lg-2" to="/employee">Employee Managament</Link>
               </li>
             </ul>
-          </div>
-        </div>
-        {isLoggedIn ? (
+            {isLoggedIn ? (
           <div>
-            <span className="navbar-text me-3">Hello, {user?.name}!</span>
-            <Link to="/login" className="login-button" onClick={handleLogout}>Logout</Link> 
+            <Link to="/login" className="login-button" onClick={handleLogout}>Logout</Link>
           </div>
         ) : (
-          <Link to="/login" className="login-button">Login</Link> 
+          <Link to="/login" className="login-button">Login</Link>
         )}
+          </div>
+        </div>
+        
       </div>
     </nav>
   );

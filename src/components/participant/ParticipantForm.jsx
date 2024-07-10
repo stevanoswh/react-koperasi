@@ -1,45 +1,88 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { createNasabah, updateNasabah } from '../../redux/features/nasabah/nasabahSlice';
 
-export default function ParticipantForm({ participantData, setParticipantData, submitForm, clearForm, editIndex }) {
+export default function NasabahForm({ nasabah, onSave }) {
+  const initialFormData = {
+    fullName: '',
+    email: '',
+    phoneNumber: '',
+    address: '',
+    username: '',
+    password: ''
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (nasabah) {
+      setFormData({
+        fullName: nasabah.fullName,
+        email: nasabah.email,
+        phoneNumber: nasabah.phoneNumber,
+        address: nasabah.address,
+        username: nasabah.username,
+        password: ''  // Password is not fetched for security reasons
+      });
+    } else {
+      setFormData(initialFormData); // Reset to initial form data when there is no nasabah to edit
+    }
+  }, [nasabah]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setParticipantData(prevData => ({
-      ...prevData,
+    setFormData(prevState => ({
+      ...prevState,
       [name]: value
     }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const action = nasabah ? updateNasabah({ ...formData, id: nasabah.id }) : createNasabah(formData);
+    dispatch(action).then(() => {
+      setFormData(initialFormData); // Clear form after successful submission
+      if (onSave) onSave(); // Call onSave if provided
+    });
+  };
+
   return (
-    <form className="mb-3">
-      <input type="hidden" value={editIndex} onChange={(e) => setEditIndex(e.target.value)} />
+    <form onSubmit={handleSubmit}>
       <div className="form-group">
-        <label>Nama:</label>
+        <label>Nama Lengkap:</label>
         <input
           type="text"
           className="form-control"
-          name="nama"
-          value={participantData.nama}
+          name="fullName"
+          value={formData.fullName}
           onChange={handleChange}
+          pattern="^[A-Za-z]+$"
+          required
         />
       </div>
       <div className="form-group">
-        <label>Tempat Lahir:</label>
+        <label>Email:</label>
         <input
-          type="text"
+          type="email"
           className="form-control"
-          name="tempatLahir"
-          value={participantData.tempatLahir}
+          name="email"
+          value={formData.email}
           onChange={handleChange}
+          required
         />
       </div>
       <div className="form-group">
-        <label>Tanggal Lahir:</label>
+        <label>Nomor Telepon:</label>
         <input
-          type="date"
+          type="tel"
           className="form-control"
-          name="tanggalLahir"
-          value={participantData.tanggalLahir}
+          name="phoneNumber"
+          value={formData.phoneNumber}
           onChange={handleChange}
+          pattern="^[0-9]+$"
+          required
         />
       </div>
       <div className="form-group">
@@ -47,13 +90,34 @@ export default function ParticipantForm({ participantData, setParticipantData, s
         <input
           type="text"
           className="form-control"
-          name="alamat"
-          value={participantData.alamat}
+          name="address"
+          value={formData.address}
           onChange={handleChange}
         />
       </div>
-      <button type="button" className="btn btn-primary mt-3" onClick={submitForm}>Submit</button>
-      {editIndex !== '' && <button type="button" className="btn btn-warning ml-2" onClick={clearForm}>Cancel Edit</button>}
+      <div className="form-group">
+        <label>Username:</label>
+        <input
+          type="text"
+          className="form-control"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>Password:</label>
+        <input
+          type="password"
+          className="form-control"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <button type="submit" className="btn btn-primary">Save</button>
     </form>
   );
 }

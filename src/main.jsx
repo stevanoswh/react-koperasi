@@ -12,11 +12,15 @@ import Contact from './pages/Contact.jsx';
 import NotFoundPage from './pages/NotFound.jsx';
 import Counter from './pages/LifecycleComp.jsx';
 import ReactHook from './pages/ReactHook.jsx';
-import ParticipantList from './pages/Participant.jsx';
 import CounterRedux from './redux/features/CounterRedux.jsx';
 import Login from './pages/Login.jsx';
 import CounterWithContext from './pages/CounterWithContext.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
+import ProtectedRoute from './components/ProtectedRoutes.jsx';
+import { Provider } from 'react-redux';
+import { store } from './redux/store.js';
+import ParticipantApp from './pages/Participant.jsx';
+import EmployeePage from './pages/EmployeePage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -42,7 +46,11 @@ const router = createBrowserRouter([
       }, 
       {
         path: "parti",
-        element: <ParticipantList/>
+        element: <ProtectedRoute><ParticipantApp/></ProtectedRoute>
+      },
+      {
+        path: "employee",
+        element: <ProtectedRoute><EmployeePage/></ProtectedRoute>
       },
       {
         path:`counterredux`,
@@ -51,7 +59,8 @@ const router = createBrowserRouter([
       {
         path: 'contextexample',
         element: <CounterWithContext/>
-      }
+      },
+
     ],
   },
   {
@@ -63,9 +72,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
-    {/* <Provider store={store}>  */}
-      <RouterProvider router={router} />
-    {/* </Provider> */}
+      <Provider store={store}> 
+        <RouterProvider router={router} />
+      </Provider>
     </AuthProvider>
   </React.StrictMode>,
 )
