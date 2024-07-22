@@ -67,7 +67,6 @@ function EmployeeForm({ employee, onSave }) {
         employeeDetails.id = employee.id;
     }
 
-    console.log(employeeDetails.id);
 
     const jsonEmployee = JSON.stringify(employeeDetails);
   
@@ -91,34 +90,34 @@ function EmployeeForm({ employee, onSave }) {
     <div className="container mt-5">
     <h1>Employee Form</h1>
     <form onSubmit={handleSubmit} >
+    <div className="row mb-3">
+    <label htmlFor="fullName" className="col-sm-2 col-form-label">Full Name</label>
+    <div className="col-sm-10">
+      <input id="fullName" type="text" className="form-control" name="fullName" value={formData.fullName} onChange={handleChange} required />
+    </div>
+    </div>
+    <div className="row mb-3">
+      <label htmlFor="email" className="col-sm-2 col-form-label">Email</label>
+      <div className="col-sm-10">
+        <input id="email" type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} required />
+      </div>
+    </div>
+    <div className="row mb-3">
+      <label htmlFor="phoneNumber" className="col-sm-2 col-form-label">Phone Number</label>
+      <div className="col-sm-10">
+        <input id="phoneNumber" type="tel" className="form-control" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required />
+      </div>
+    </div>
       <div className="row mb-3">
-        <label className="col-sm-2 col-form-label">Full Name</label>
+        <label htmlFor="hireDate" className="col-sm-2 col-form-label">Hire Date</label>
         <div className="col-sm-10">
-          <input type="text" className="form-control" name="fullName" value={formData.fullName} onChange={handleChange} required />
+          <input id="hireDate" type="date" className="form-control" name="hireDate" value={formData.hireDate} onChange={handleChange} required />
         </div>
       </div>
       <div className="row mb-3">
-        <label className="col-sm-2 col-form-label">Email</label>
+        <label htmlFor="position" className="col-sm-2 col-form-label">Position</label>
         <div className="col-sm-10">
-          <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} required />
-        </div>
-      </div>
-      <div className="row mb-3">
-        <label className="col-sm-2 col-form-label">Phone Number</label>
-        <div className="col-sm-10">
-          <input type="tel" className="form-control" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required />
-        </div>
-      </div>
-      <div className="row mb-3">
-        <label className="col-sm-2 col-form-label">Hire Date</label>
-        <div className="col-sm-10">
-          <input type="date" className="form-control" name="hireDate" value={formData.hireDate} onChange={handleChange} required />
-        </div>
-      </div>
-      <div className="row mb-3">
-        <label className="col-sm-2 col-form-label">Position</label>
-        <div className="col-sm-10">
-          <select className="form-control" name="position" value={formData.position} onChange={handleChange} required>
+          <select id="position" className="form-control" name="position" value={formData.position} onChange={handleChange} required>
             <option value="">Select Position</option>
             <option value="CASHIER">Cashier</option>
             <option value="MANAGER">Manager</option>
@@ -126,15 +125,15 @@ function EmployeeForm({ employee, onSave }) {
         </div>
       </div>
       <div className="row mb-3">
-        <label className="col-sm-2 col-form-label">Salary</label>
+        <label htmlFor="salary" className="col-sm-2 col-form-label">Salary</label>
         <div className="col-sm-10">
-          <input type="number" className="form-control" name="salary" value={formData.salary} onChange={handleChange} required />
+          <input id="salary" type="number" className="form-control" name="salary" value={formData.salary} onChange={handleChange} required />
         </div>
       </div>
       <div className="row mb-3">
-        <label className="col-sm-2 col-form-label">Profile Image</label>
+        <label htmlFor="image" className="col-sm-2 col-form-label">Profile Image</label>
         <div className="col-sm-10">
-          <input type="file" className="form-control" name="image" onChange={handleChange} accept="image/*" />
+          <input id="image" type="file" className="form-control" name="image" onChange={handleChange} accept="image/*" />
         </div>
       </div>
       <div className="row mb-3">
